@@ -13,14 +13,20 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Moving object")
 border_collision = True
 background_color = (37, 35, 33)
-G = 0.0005
+G = 0.01
+unit_vector_scalar = 1000
 
 # init my objectz with nuffin
-objects = []
+objects = [
+    # left object
+    object(-0.5, 0, 0.05, 0.05, -0.05, "white", 1),
+    # right object
+    object(0.5, 0, 0.05, -0.05, 0.05, "white", 1)
+]
 
 # fill my objectz with objects
-for i in range(2):
-    objects.append(object(uniform(-1, 1), uniform(-1, 1), 0.05, 0.05, 0.05, "white", 1))
+# for i in range(2):
+#     objects.append(object(uniform(-1, 1), uniform(-1, 1), 0.05, 0.05, 0.05, "white", 1))
 
 # nomalize_center_of_masses(objects)
 
@@ -31,6 +37,11 @@ def draw():
     for object in objects:
         # Draw the object
         pygame.draw.circle(screen, object.color, (map_x(object.x, width), map_y(object.y, height)), map_radius(object.radius, width))    
+
+        # Draw force vector (red line)
+        force_vector = (object.vx * unit_vector_scalar, object.vy * unit_vector_scalar)
+        pygame.draw.line(screen, (255, 0, 0), (map_x(object.x, width), map_y(object.y, height)), 
+                         (map_x(object.x, width) + force_vector[0], map_y(object.y, height) + force_vector[1]), 2)
 
     # Update the display
     pygame.display.flip()
