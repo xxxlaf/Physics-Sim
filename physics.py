@@ -14,7 +14,7 @@ pygame.display.set_caption("Moving object")
 border_collision = True
 background_color = (37, 35, 33)
 G = 0.01
-unit_vector_scalar = 1000
+unit_vector_scalar = 500
 
 # init my objectz with nuffin
 objects = [
@@ -31,7 +31,6 @@ objects = [
 # nomalize_center_of_masses(objects)
 
 def draw():
-    # Clear the screen
     screen.fill(background_color)
 
     for object in objects:
@@ -43,10 +42,7 @@ def draw():
         pygame.draw.line(screen, (255, 0, 0), (map_x(object.x, width), map_y(object.y, height)), 
                          (map_x(object.x, width) + force_vector[0], map_y(object.y, height) + force_vector[1]), 2)
 
-    # Update the display
     pygame.display.flip()
-    
-    # Cap the frame rate
     pygame.time.Clock().tick(60)
     return 0
 
