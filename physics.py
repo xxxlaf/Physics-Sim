@@ -37,10 +37,10 @@ def draw():
         # Draw the object
         pygame.draw.circle(screen, object.color, (map_x(object.x, width), map_y(object.y, height)), map_radius(object.radius, width))    
 
-        # Draw force vector (red line)
-        force_vector = (object.vx * unit_vector_scalar, object.vy * unit_vector_scalar)
+        # Draw velocity vector (red line)
+        vel_vector = (object.vx * unit_vector_scalar, object.vy * unit_vector_scalar)
         pygame.draw.line(screen, (255, 0, 0), (map_x(object.x, width), map_y(object.y, height)), 
-                         (map_x(object.x, width) + force_vector[0], map_y(object.y, height) + force_vector[1]), 2)
+                         (map_x(object.x, width) + vel_vector[0], map_y(object.y, height) - vel_vector[1]), 2)
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)
