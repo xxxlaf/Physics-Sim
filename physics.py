@@ -25,8 +25,8 @@ objects = [
     # left object
     object(0, 0, 0.005, 0, 0, "yellow", 1000, tail_length),
     # right object
-    object(0.7, 0, 0.05, 0, 4, "white", 1, tail_length),
-    object(-1, -0.5, 0.005, 0, -3, "white", 100, tail_length)
+    object(0.7, 0, 0.05, 0, 4, "white", 0.1, tail_length),
+    object(-1, -0.5, 0.005, 0, -3, "black", 100, tail_length)
 ]
 
 def draw():
@@ -35,7 +35,7 @@ def draw():
     for object in objects:
         object.add_tail(width, height)
         if (len(object.tail) > 2):
-            pygame.draw.lines(screen, "red", False, object.tail, 2)
+            pygame.draw.lines(screen, "red", False, object.tail, 1)
 
         # Draw the object
         pygame.draw.circle(screen, object.color, (map_x(object.x, width), map_y(object.y, height)), map_radius(object.radius, width))    
@@ -58,6 +58,9 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
+        elif event.type == pygame.MOUSEWHEEL:
+            incrementScreenScale(event.y)
 
     draw()
     for _ in range(physic_step_per_frame):

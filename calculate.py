@@ -1,6 +1,12 @@
 from math import *;
 G = 0.01
-screen_scale = 3
+screen_scale = 6
+
+def incrementScreenScale(scale):
+    global screen_scale
+    screen_scale += scale
+    if (screen_scale < 1):
+        screen_scale = 1
 
 # Returns the distance between two objects using a variation of the Pythagorean theorem
 def get_distance(object_1, object_2):
@@ -15,9 +21,9 @@ def detect_collision(object_1, object_2):
         return False
     
 def handle_border_collision(object):
-    if (object.x + object.radius > 1 or object.x - object.radius < -1):
+    if (object.x + object.radius > 1 * screen_scale or object.x - object.radius < -1 * screen_scale):
         object.vx *= -1
-    if (object.y + object.radius > 1 or object.y - object.radius < -1):
+    if (object.y + object.radius > 1 * screen_scale or object.y - object.radius < -1 * screen_scale):
         object.vy *= -1
     
 def map_x(x, width):
