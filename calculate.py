@@ -1,6 +1,6 @@
 from math import *;
 G = 0.01
-screen_scale = 6
+screen_scale = 1
 
 def incrementScreenScale(scale):
     global screen_scale
@@ -15,10 +15,7 @@ def get_distance(object_1, object_2):
 # Detects if two objects collide by getting the distance between them and 
 # checking if the that distance is less than the sum of their radii.
 def detect_collision(object_1, object_2):
-    if (get_distance(object_1, object_2) < (object_1.radius + object_2.radius)):
-        return True
-    else:
-        return False
+    return get_distance(object_1, object_2) < (object_1.radius + object_2.radius)
     
 def handle_border_collision(object):
     if (object.x + object.radius > 1 * screen_scale or object.x - object.radius < -1 * screen_scale):
@@ -77,7 +74,22 @@ def get_force_of_gravity_of_all_objects(object, objects):
 
 def detect_collision_of_all_objects(object, objects):
     for other_object in objects:
-        if (object != other_object):
-            if (detect_collision(object, other_object)):
-                object.vx *= -1
-                object.vy *= -1
+        if object != other_object:
+            if detect_collision(object, other_object):
+                # Calculate relative velocity
+                rel_vel_x = object.vx - other_object.vx
+                rel_vel_y = object.vy - other_object.vy
+
+                # Calculate relative distance
+                rel_dist_x = object.x - other_object.x
+                rel_dist_y = object.y - other_object.y
+
+                # Calculate dot product of relative velocity and relative distance
+                dot_product = rel_vel_x * rel_dist_x + rel_vel_y * rel_dist_y
+
+                # Calculate magnitude of the relative distance squared
+                rel_dist_squared = rel_dist_x ** 2 + rel_dist_y ** 2
+
+                # Calculate new velocities for conservation of energy and momentum
+                object.vx -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
+                object.vy -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y

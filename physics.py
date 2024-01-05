@@ -12,22 +12,25 @@ width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Moving object")
 border_collision = False
+do_scrolling = True
 background_color = (37, 35, 33)
 unit_vector_scalar = 500
-accuracy = 10
-speed = 0.01
+accuracy = 100
+speed = 0.001
 physic_step_per_frame = accuracy
 delta_t = speed / accuracy
-tail_length = 200
+tail_length = 75
 
 # init my objectz with nuffin
 objects = [
     # left object
     object(0, 0, 0.005, 0, 0, "yellow", 1000, tail_length),
     # right object
-    object(0.7, 0, 0.05, 0, 4, "white", 0.1, tail_length),
-    object(-1, -0.5, 0.005, 0, -3, "black", 100, tail_length)
+    object(0.7, 0, 0.05, 0, 2, "white", 0.1, tail_length),
+    object(-0.25, -0.5, 0.005, 0, -3, "black", 100, tail_length)
 ]
+
+nomalize_center_of_masses(objects)
 
 def draw():
     screen.fill(background_color)
@@ -59,7 +62,7 @@ while True:
             pygame.quit()
             sys.exit()
 
-        elif event.type == pygame.MOUSEWHEEL:
+        elif event.type == pygame.MOUSEWHEEL and do_scrolling:
             incrementScreenScale(event.y)
 
     draw()
