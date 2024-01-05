@@ -13,5 +13,5 @@ class object:
     def tick(self, Fx, Fy, delta_t):
         self.x += self.vx * delta_t
         self.y += self.vy * delta_t
-        self.vx += self.m * Fx * delta_t
-        self.vy += self.m * Fy * delta_t
+        self.vx += Fx / self.m * delta_t
+        self.vy += Fy / self.m * delta_t
