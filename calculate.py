@@ -1,4 +1,4 @@
-from math import *;
+from math import *
 
 # Returns the distance between two objects using a variation of the Pythagorean theorem
 def get_distance(object_1, object_2):
@@ -53,6 +53,6 @@ def get_force_of_gravity(object_1, object_2, G):
         # get normalized direction
         ndx = -(object_1.x - object_2.x) / r
         ndy = -(object_1.y - object_2.y) / r
-        Fx = G * ((object_1.m * object_2.m)/r ** 1) * ndx
-        Fy = G * ((object_1.m * object_2.m)/r ** 1) * ndy
+        Fx = G * ((object_1.m * object_2.m)/r ** 2) * ndx
+        Fy = G * ((object_1.m * object_2.m)/r ** 2) * ndy
         return Fx, Fy

@@ -1,6 +1,7 @@
-from math import *;
+from math import *
+from physics import *
 
-class object:
+class Object:
     def __init__(self, x, y, radius, vx = 0, vy = 0, color = "white", m = 1):
         self.x = x
         self.y = y
@@ -9,9 +10,16 @@ class object:
         self.vy = vy
         self.color = color
         self.m = m
-    
-    def tick(self, Fx, Fy, delta_t):
-        self.x += self.vx * delta_t
-        self.y += self.vy * delta_t
-        self.vx += Fx / self.m * delta_t
-        self.vy += Fy / self.m * delta_t
+
+    def tick(self, delta_t):
+        Fx, Fy = detect_collision_of_all_objects(self)
+        # update velocity with the force
+        self.vx += 0.5 * delta_t * (Fx / self.m)
+        self.vy += 0.5 * delta_t * (Fy / self.m)
+        # update the position with velocity
+        self.x += delta_t * self.vx
+        self.y += delta_t * self.vy
+        Fx, Fy = detect_collision_of_all_objects(self)
+        # update velocity with new force
+        self.vx += 0.5 * delta_t * (Fx / self.m)
+        self.vy += 0.5 * delta_t * (Fy / self.m)

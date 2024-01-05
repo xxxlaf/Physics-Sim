@@ -1,8 +1,8 @@
 import pygame
 import sys
-from object import *;
-from random import *;
-from calculate import *;
+from object import *
+from random import *
+from calculate import *
 
 # Initialize Pygame
 pygame.init()
@@ -15,13 +15,17 @@ border_collision = True
 background_color = (37, 35, 33)
 G = 0.01
 unit_vector_scalar = 500
+accuracy = 2500
+speed = 0.1
+physic_step_per_frame = accuracy
+delta_t = speed / accuracy
 
 # init my objectz with nuffin
 objects = [
     # left object
-    object(-0.5, 0, 0.05, 0.05, -0.05, "white", 1),
+    Object(-0.5, 0, 0.05, 0, -0.05, "white", 1),
     # right object
-    object(0.5, 0, 0.05, -0.05, 0.05, "white", 1)
+    Object(0.5, 0, 0.05, 0, 0.05, "white", 1)
 ]
 
 # fill my objectz with objects
@@ -46,22 +50,31 @@ def draw():
     pygame.time.Clock().tick(60)
     return 0
 
+def get_force_of_gravity_of_all_objects(object):
+    ΣFx = 0
+    ΣFy = 0
+    for other_object in objects:
+        if (object != other_object):
+            a , b = get_force_of_gravity(object, other_object, G)
+            ΣFx += a
+            ΣFy += b
+    return ΣFx, ΣFy
+
+def detect_collision_of_all_objects(object):
+    for other_object in objects:
+        if (object != other_object):
+            if (detect_collision(object, other_object)):
+                object.vx *= -1
+                object.vy *= -1
+
 def tick():
     for object in objects:
-        ΣFx = 0
-        ΣFy = 0
-        for object_2 in objects:
-            if (object != object_2):
-                a , b = get_force_of_gravity(object, object_2, G)
-                ΣFx += a
-                ΣFy += b
-                if (detect_collision(object, object_2)):
-                    object.vx *= -1
-                    object.vy *= -1
+        get_force_of_gravity_of_all_objects(object)
+        detect_collision_of_all_objects(object)
         if (border_collision):
             handle_border_collision(object)
 
-        object.tick(ΣFx , ΣFy, 0.1)
+        object.tick(delta_t)
 
 # Main game loop
 while True:
@@ -71,4 +84,5 @@ while True:
             sys.exit()
 
     draw()
-    tick()
+    for _ in range(physic_step_per_frame):
+        tick()
