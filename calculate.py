@@ -1,4 +1,6 @@
-from math import *
+from math import *;
+G = 0.01
+screen_scale = 3
 
 # Returns the distance between two objects using a variation of the Pythagorean theorem
 def get_distance(object_1, object_2):
@@ -19,13 +21,13 @@ def handle_border_collision(object):
         object.vy *= -1
     
 def map_x(x, width):
-    return ((x + 1)/2) * width
+    return ((x/screen_scale + 1)/2) * width
 
 def map_y(y, height):
-    return height - ((y + 1)/2) * height
+    return height - ((y/screen_scale + 1)/2) * height
 
 def map_radius(radius, width):
-    return (radius/2) * width
+    return (radius/screen_scale/2) * width
 
 def nomalize_center_of_masses(objects):
     Σx, Σy, Σvx, Σvy, Σm = 0, 0, 0, 0, 0
@@ -56,3 +58,20 @@ def get_force_of_gravity(object_1, object_2, G):
         Fx = G * ((object_1.m * object_2.m)/r ** 2) * ndx
         Fy = G * ((object_1.m * object_2.m)/r ** 2) * ndy
         return Fx, Fy
+
+def get_force_of_gravity_of_all_objects(object, objects):
+    ΣFx = 0
+    ΣFy = 0
+    for other_object in objects:
+        if (object != other_object):
+            a , b = get_force_of_gravity(object, other_object, G)
+            ΣFx += a
+            ΣFy += b
+    return ΣFx, ΣFy
+
+def detect_collision_of_all_objects(object, objects):
+    for other_object in objects:
+        if (object != other_object):
+            if (detect_collision(object, other_object)):
+                object.vx *= -1
+                object.vy *= -1
