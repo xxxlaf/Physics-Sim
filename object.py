@@ -27,7 +27,7 @@ class object:
         self.vy += 0.5 * delta_t * (Fy / self.m)
 
     def add_tail(self, width, height):
-        self.tail.append([map_x(self.x, width), map_y(self.y, height)])
+        self.tail.append([self.x, self.y])
         if (len(self.tail) > self.max_tail_length and len(self.tail) > 0):
             self.tail.pop(0)
         

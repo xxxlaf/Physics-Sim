@@ -1,5 +1,5 @@
 from math import *;
-G = 0.01
+G = 0.1
 screen_scale = 1
 
 def incrementScreenScale(scale):
@@ -93,3 +93,11 @@ def detect_collision_of_all_objects(object, objects):
                 # Calculate new velocities for conservation of energy and momentum
                 object.vx -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
                 object.vy -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
+
+                other_object.vx += (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
+                other_object.vy += (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
+
+                # Separate the objects to avoid collision
+                separation_factor = 0.01  # Adjust this factor as needed
+                object.x += rel_dist_x * separation_factor
+                object.y += rel_dist_y * separation_factor
