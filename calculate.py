@@ -22,6 +22,9 @@ def handle_border_collision(object):
         object.vx *= -1
     if (object.y + object.radius > 1 * screen_scale or object.y - object.radius < -1 * screen_scale):
         object.vy *= -1
+
+def map(x, y, width, height):
+    return [map_x(x, width), map_y(y, height)]
     
 def map_x(x, width):
     return ((x/screen_scale + 1)/2) * width
@@ -91,11 +94,11 @@ def detect_collision_of_all_objects(object, objects):
                 rel_dist_squared = rel_dist_x ** 2 + rel_dist_y ** 2
 
                 # Calculate new velocities for conservation of energy and momentum
-                object.vx -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
-                object.vy -= (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
+                object.vx -= 0.99 * (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
+                object.vy -= 0.99 * (2 * other_object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
 
-                other_object.vx += (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
-                other_object.vy += (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
+                other_object.vx += 0.99 * (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_x
+                other_object.vy += 0.99 * (2 * object.m / (object.m + other_object.m)) * dot_product / rel_dist_squared * rel_dist_y
 
                 # Separate the objects to avoid collision
                 separation_factor = 0.01  # Adjust this factor as needed

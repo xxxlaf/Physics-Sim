@@ -1,5 +1,6 @@
 from math import *
 from calculate import *
+from random import *
 
 class object:
     def __init__(self, x, y, radius, vx = 0, vy = 0, color = "white", m = 1, max_tail_length = 15):
@@ -31,3 +32,19 @@ class object:
         if (len(self.tail) > self.max_tail_length and len(self.tail) > 0):
             self.tail.pop(0)
         
+def generate_random_objects(num_objects):
+    objects = []
+    for _ in range(num_objects):
+        x = uniform(-0.5, 0.5)  # Random x position between -1 and 1
+        y = uniform(-0.5, 0.5)  # Random y position between -1 and 1
+        radius = 0.05
+        vx = uniform(-0.5, 0.5) * 10
+        vy = uniform(-0.5, 0.5) * 10
+        color = choice(["red", "blue", "green", "purple", "orange"])
+        mass = 1
+        tail_length = 1
+
+        new_object = object(x, y, radius, vx, vy, color, mass, tail_length)
+        objects.append(new_object)
+
+    return objects

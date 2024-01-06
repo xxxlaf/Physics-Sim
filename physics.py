@@ -11,24 +11,27 @@ pygame.init()
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Moving object")
-border_collision = False
+border_collision = True
 do_scrolling = True
 background_color = (37, 35, 33)
 unit_vector_scalar = 500
-accuracy = 1000
+accuracy = 50
 speed = 1
-physic_step_per_frame = accuracy
-delta_t = speed / accuracy
-tail_length = 75
+physic_step_per_frame = accuracy * speed
+delta_t = 1 / accuracy
+tail_length = 50
+e = 2.718281828
 
 # init my objectz with nuffin
-objects = [
-    # left object
-    object(0.5, 0.5, 0.05, 0, 0, "yellow", 1, tail_length),
-    # right object
-    object(-0.5, 0, 0.05, 0, 0, "white", 1, tail_length),
-    object(-0.25, -0.5, 0.05, 0, 0, "black", 1, tail_length)
-]
+# objects = [
+#     # left object
+#     object(0.5, 0.5, 0.05, 0, 0, "yellow", 1, tail_length),
+#     # right object
+#     object(-0.5, 0, 0.05, 0, 0, "white", 1, tail_length),
+#     object(-0.25, -0.5, 0.05, 0, 0, "black", 1, tail_length)
+# ]
+
+objects = generate_random_objects(25)
 
 nomalize_center_of_masses(objects)
 
@@ -38,7 +41,7 @@ def draw():
     for object in objects:
         object.add_tail(width, height)
         if (len(object.tail) > 2):
-            pygame.draw.lines(screen, "red", False, object.tail, 1)
+            pygame.draw.lines(screen, "red", False, [map(x, y, width, height) for x , y in object.tail], 1)
 
         # Draw the object
         pygame.draw.circle(screen, object.color, (map_x(object.x, width), map_y(object.y, height)), map_radius(object.radius, width))    
@@ -63,7 +66,19 @@ while True:
             sys.exit()
 
         elif event.type == pygame.MOUSEWHEEL and do_scrolling:
-            incrementScreenScale(event.y)
+            mods = pygame.key.get_mods()
+            if mods & pygame.KMOD_SHIFT:
+                print(speed)
+                speed *= 0.5 + (1 / (1 + e ** -event.y))
+                delta_t = speed / accuracy
+            elif mods & pygame.KMOD_CTRL:
+                print(accuracy)
+                accuracy *= 0.5 + (1 / (1 + e ** -event.y))
+                physic_step_per_frame = min(1, accuracy)
+                delta_t = speed / accuracy
+            else:
+                print("zoom")
+                incrementScreenScale(-event.y)
 
     draw()
     for _ in range(physic_step_per_frame):
