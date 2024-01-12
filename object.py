@@ -26,6 +26,7 @@ class object:
         # update velocity with new force
         self.vx += 0.5 * delta_t * (Fx / self.m)
         self.vy += 0.5 * delta_t * (Fy / self.m)
+        # print(f"Vx: {self.vx}, Vy: {self.vy}")
 
     def add_tail(self, width, height):
         self.tail.append([self.x, self.y])
@@ -38,8 +39,8 @@ def generate_random_objects(num_objects):
         x = uniform(-0.5, 0.5)  # Random x position between -1 and 1
         y = uniform(-0.5, 0.5)  # Random y position between -1 and 1
         radius = 0.05
-        vx = uniform(-0.5, 0.5) * 10
-        vy = uniform(-0.5, 0.5) * 10
+        vx = uniform(-0.5, 0.5) * 1
+        vy = uniform(-0.5, 0.5) * 1
         color = choice(["red", "blue", "green", "purple", "orange"])
         mass = 1
         tail_length = 1
