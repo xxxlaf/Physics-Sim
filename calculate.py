@@ -1,5 +1,5 @@
 from math import *;
-G = 0.1
+G = 0.01
 screen_scale = 1
 
 def incrementScreenScale(scale):

@@ -10,7 +10,7 @@ pygame.init()
 # Set up display
 width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption("Moving object")
+pygame.display.set_caption("Gravity")
 border_collision = True
 do_scrolling = True
 background_color = (37, 35, 33)
