@@ -23,6 +23,12 @@ def handle_border_collision(object):
     if (object.y + object.radius > 1 * screen_scale or object.y - object.radius < -1 * screen_scale):
         object.vy *= -1
 
+def TENSION_handle_border_collision(object):
+    if (object.x + object.radius > 1 * screen_scale or object.x - object.radius < -1 * screen_scale):
+        object.vx *= -0.8
+    if (object.y + object.radius > 1 * screen_scale or object.y - object.radius < -1 * screen_scale):
+        object.vy *= -0.8
+
 def map(x, y, width, height):
     return [map_x(x, width), map_y(y, height)]
     

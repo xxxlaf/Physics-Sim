@@ -1,6 +1,7 @@
 import pygame
 import sys
-from object import *
+from hanging_object import *
+from rope import *
 from random import *
 from calculate import *
 
@@ -22,32 +23,26 @@ delta_t = 0.001 # / accuracy
 tail_length = 50
 # e = 2.718281828
 
-objects = generate_random_objects(2)
-
-nomalize_center_of_masses(objects)
+hobjects = [hObject(0, 0, 0.5, 0, 0)]
+# rope = rope()
 
 def draw():
     screen.fill(background_color)
 
-    for object in objects:
-        # object.add_tail(width, height)
-        # if (len(object.tail) > 2):
-        #     pygame.draw.lines(screen, "red", False, [map(x, y, width, height) for x , y in object.tail], 1)
-
-        # Draw the object
-        pygame.draw.circle(screen, object.color, (map_x(object.x, width), map_y(object.y, height)), map_radius(object.radius, width))    
+    for hobject in hobjects:
+        pygame.draw.circle(screen, hobject.color, (map_x(hobject.x, width), map_y(hobject.y, height)), map_radius(hobject.radius, width))    
 
     pygame.display.flip()
     pygame.time.Clock().tick(60)
 
 def tick():
-    for object in objects:
-        get_force_of_gravity_of_all_objects(object, objects)
-        detect_collision_of_all_objects(object, objects)
+    for hobject in hobjects:
         if (border_collision):
-            handle_border_collision(object)
+            TENSION_handle_border_collision(hobject)
 
-        object.tick(objects, delta_t)
+        hobject.tick(delta_t)
+    
+    # for rope in ropes:
 
 # Main game loop
 while True:
